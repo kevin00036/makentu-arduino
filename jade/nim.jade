@@ -1,0 +1,63 @@
+include mixin
+
+section
+  +slide(data-markdown=true)
+    h1 Nim
+
+  +slide(data-markdown=true)
+    +problem({name: 'Nim (Easy)'}).
+      螞蟻窩裡有 $N$ 個石頭，兩人輪流拿，每次可以拿走**任意多顆**(但至少要拿$1$顆)，拿到最後一顆的一方贏。請問先手還後手必勝？ ($1 \leq N \leq 10^{18}$)
+
+  +slide(data-markdown=true)
+    +problem({name: 'Nim (Medium)'}).
+      蟑螂窩裡有 $2$ 堆石頭，分別是 $A, B$ 個，兩人輪流拿，每次可以從一堆拿走**任意多顆**(但至少要拿$1$顆，且一次只能從同一堆拿)，拿到最後一顆的一方贏。請問先手還後手必勝？ ($1 \leq A, B \leq 10^{18}$)
+
+  +slide(data-markdown=true)
+    ul
+      li.fragment $A = B$ : 後手必勝！
+      .fragment 先手拿一堆 $k$ 個，後手模仿他另一堆 $k$ 個
+      .fragment 後手永遠拿得到最後一個
+      br
+      li.fragment $A \neq B$ : 先手必勝！
+      .fragment 第一步把多的那堆拿到跟少的一樣
+
+  +slide(data-markdown=true)
+    +problem({name: 'Nim (Final)'}).
+      垃圾場裡有 $N$ 堆石頭，分別是 $a_1, a_2, \cdots, a_N$ 個，兩人輪流拿，每次可以從一堆拿走**任意多顆**(但至少要拿$1$顆，且一次只能從同一堆拿)，拿到最後一顆的一方贏。請問先手還後手必勝？ ($1 \leq N \leq 10^6, 1 \leq a_i \leq 10^{18}$)
+
+  +slide(data-markdown=true)
+    h3 神奇的結論
+    +theorem({name: 'Nim'}).
+      定義一個盤面的**特徵值**為 $$X = a_1 \oplus a_2 \oplus \cdots \oplus a_N$$
+
+      此盤面**先手必勝**，若且唯若 $X \neq 0$ 。
+
+  +slide(data-markdown=true)
+    p 還記得嗎?
+    p $$ x(S) = \begin{cases}+1 &, \text{可以走到至少一個 -1} \\\\ -1 &, \text{otherwise}\end{cases}$$
+    p.fragment 合法的 $x(S)$ 值是唯一的！
+    p.fragment 我們只要證明剛才的定理符合此規則就好了：
+    ul.fragment
+      li $X=0$ 的狀態無法走到其他 $X=0$ 的狀態
+      li $X\neq 0$ 的狀態必定可以走到至少一個 $X=0$ 的狀態
+
+  +slide(data-markdown=true)
+    h3 $X=0$ 的狀態無法走到其他 $X=0$ 的狀態
+    ul
+      li.fragment 必須從一堆中拿掉一些石頭
+      li.fragment 其中一個 $a_i$ 變小
+      li.fragment $a_i$ 必有 Bit 變化
+      li.fragment 其他 $a$ 值沒變
+      li.fragment 全部 XOR 起來必有 Bit 變化
+      li.fragment $X' \neq 0$
+
+  +slide(data-markdown=true)
+    h3 $X\neq 0$ 的狀態必可以走到至少一個 $X=0$ 的狀態
+    ul
+      li.fragment 假設 $X$ 最高位為第 $k$ 位
+      li.fragment 至少一個 $a_i$ 的第 $k$ 位為 $1$ 
+      li.fragment 如果把 $a_i$ 拿成 $a_i \oplus X$，新的 $X$ 就變 $0$ 了！
+      li.fragment 而且 $a_i$ 一定會變小！
+    br
+    br
+    h1.fragment [喵]

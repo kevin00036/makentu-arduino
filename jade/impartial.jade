@@ -1,0 +1,84 @@
+include mixin
+
+section
+  +slide(data-markdown=true)
+    h1 對稱遊戲
+
+  +slide(data-markdown=true)
+    p 不論是先手或後手，面對同一個盤面，可以進行的操作集合是一樣的。
+    ul
+      li.fragment OOXX ? 
+      li.fragment 圍棋 ? 
+      li.fragment 撿石頭 !
+    
+  +slide(data-markdown=true)
+    ul
+      li 不在意誰是整局遊戲的先手
+      li 重要的是**接下來的一方**輸或贏
+    br
+    br
+
+    | $$ x(S) = 
+    | \begin{cases}
+    | +1 &, \text{接下來的一方贏} \\\\
+    | -1 &, \text{接下來的一方輸}
+    | \end{cases}
+    | $$
+
+  +slide(data-markdown=true)
+    p 遞迴式也變得比較簡單
+    p $$ x(S) = -\min x(u), u \in F(S)$$
+
+    +theorem({name: '對稱遊戲遞迴規則'}).
+      如果 $S$ 不是結束盤面，
+      $$ x(S) = \begin{cases}+1 &, \text{可以走到至少一個 -1} \\\\ -1 &, \text{otherwise}\end{cases}$$
+    p.fragment 常用結束條件：不能動的一方輸
+    p.fragment => $S$ 是結束盤面也適用！
+
+  +slide(data-markdown=true)
+    h3 另一種常用的表示法
+    ul
+      li $x(S) = +1$ : <font color="blue">N</font>-position, <font color="blue">N</font>ext player win
+      li $x(S) = -1$ : <font color="green">P</font>-position, <font color="green">P</font>revious player win
+
+  +slide(data-markdown=true)
+    +problem({name: '撿石頭'}).
+      老鼠窩裡有 $N$ 個石頭，兩人輪流拿，每次可以拿走 $1 \sim 3$ 顆，拿到最後一顆的一方贏。請問先手還後手必勝？ ($1 \leq N \leq 10^{18}$)
+
+  +slide(data-markdown=true)
+    table(align='left')
+      tr
+        td $n$
+        td 0
+        td 1
+        td 2
+        td 3
+        td 4
+        td 5
+        td 6
+        td 7
+        td 8
+        td 9
+        td 10
+        td 11
+        td 12
+      tr
+        td $x(n)$
+        td $-1$
+        td $+1$
+        td $+1$
+        td $+1$
+        td $-1$
+        td $+1$
+        td $+1$
+        td $+1$
+        td $-1$
+        td $+1$
+        td $+1$
+        td $+1$
+        td $-1$
+
+    br
+    br
+    br
+    h3.fragment 必勝策略：每次拿到剩 $4$ 的倍數

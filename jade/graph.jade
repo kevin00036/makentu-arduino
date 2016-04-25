@@ -1,0 +1,106 @@
+include mixin
+
+section
+  +slide(data-markdown=true)
+    h1 Game Graph
+
+  +slide(data-markdown=true)
+    h2 Game Graph
+    ul
+      li.fragment 遊戲是**決定性**的！
+      li.fragment 用<font color="red">圖</font> (Graph) 來表示
+    br
+    br
+    h3.fragment 盤面 -> 狀態 -> <font color="blue">點 ($V$)</font>
+    h3.fragment 操作 -> 轉移 -> <font color="green">邊 ($F$)</font>
+    h3.fragment $G = (V, F)$
+
+  +slide(data-markdown=true)
+    h2 Game Graph
+    ul
+      li.fragment 遊戲**必定會結束**
+      li.fragment Directed <font color="red">Acyclic</font> Graph (DAG)!
+    
+  +slide(data-markdown=true)
+    img(width="80%", src="img/graph.png")
+    ul
+      li 起始狀態
+      li 結束狀態
+
+  +slide(data-markdown=true)
+    h2 遊戲策略
+    ul
+      li.fragment <font color="blue">先手</font> / <font color="green">後手</font>
+      li.fragment <font color="blue">鉀方</font> / <font color="green">釔方</font>
+      li.fragment 每個結束局面都有一個<font color="blue">鉀方</font>獲利值 $x$
+      li.fragment <font color="blue">鉀方</font> 想要讓 $x$ 值**最大化**
+      li.fragment <font color="green">釔方</font> 想要讓 $x$ 值**最小化**
+
+  +slide(data-markdown=true)
+    p 假設**每個**盤面 $S$ 都有一個固定的<font color="blue">鉀方</font>獲利值 $x(S)$
+    p 那麼如果 $S$ 不是結束局面的話
+  
+    | $$x(S) = 
+    | \begin{cases}
+    | \max x(u), u \in F(S) &, \text{if 輪到鉀方} \\\\ 
+    | \min x(u), u \in F(S) &, \text{if 輪到釔方}
+    | \end{cases}
+    | $$
+
+  +slide(data-markdown=true)
+    p 可是真的每個盤面都有固定的獲利值嗎？
+    h2.fragment YES !!
+    ul
+      li.fragment DAG 存在 拓樸順序(Topological order)
+      li.fragment 結束盤面存在 $x(S)$
+      li.fragment 數學歸納法！
+      li.fragment 真的嗎...?
+
+  +slide(data-markdown=true)
+    p 還要證明鉀方的獲利值確實固定是 $x(S)$ ！
+    ul
+      li.fragment 不論釔方怎麼走，鉀方總是可以讓自己獲利值 $\geq x(S)$
+      li.fragment 不論鉀方怎麼走，釔方總是可以讓對手獲利值 $\leq x(S)$
+      li.fragment 雙方都使用最佳策略的話，最終獲利值就是 $x(S)$ ！
+
+  +slide(data-markdown=true)
+    +theorem({name: ''}).
+      設初始盤面為 $R$ ，則如果雙方都使用最佳策略，那麼鉀方最終獲利值一定是 $x(R)$。
+
+  +slide(data-markdown=true)
+    h3 那麼要如何計算 $x(S)$ 值呢？
+    ul
+      li.fragment DAG 有拓樸順序
+      li.fragment Dynamic Programming !
+      li.fragment $O(V+F)$
+
+  +slide(data-markdown=true)
+    p 如果遊戲只分**輸贏**呢？
+    ul
+      li.fragment OOXX
+      li.fragment 五子棋、象棋、...
+
+    p.fragment 定義獲利值：勝利 = $+1$，落敗 = $-1$
+
+  +slide(data-markdown=true)
+    +theorem({name: '必勝策略'}).
+      對於一個只分輸贏的遊戲，如果 $x(R) = +1$ ，則先手必勝；如果 $x(R) = -1$ ，則後手必勝。
+  
+    br
+    h3.fragment 沒錯，遊戲結果也是決定性的！
+
+  +slide(data-markdown=true)
+    p 所以，我們就這樣破解了所有遊戲？
+    h3.fragment 當然沒有！
+    h3.fragment $O(\color{red}{V} + \color{blue}{F})$
+    ul.fragment
+      li OOXX : $\color{red}{V} \approx 10^5$
+      li 象棋 : $\color{red}{V} \approx 10^{40}$
+      li 西洋棋 : $\color{red}{V} \approx 10^{47}$
+      li 圍棋 : $\color{red}{V} \approx 10^{170}$
+
+  +slide(data-markdown=true)
+    p 各種剪枝、各種 Heuristic
+    img(width="40%", src="img/alphago.jpg")
+    img(width="50%", src="img/alphago2.jpg")
+

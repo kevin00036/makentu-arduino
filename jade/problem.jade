@@ -1,0 +1,140 @@
+include mixin
+
+section
+  +slide(data-markdown=true)
+    h1 例題
+
+  +slide(data-markdown=true)
+    +problem({name: 'Lieges of Legendre'})
+      桌面上有 $N$ 堆壓克力板，每堆分別有 $a_1, a_2, \cdots a_N$ 片。Kevin 和 Nicky 打算用這些壓克力板玩一個遊戲，兩人輪流移動，每次可以從以下兩種操作選一種：
+
+      br
+      br
+      ul
+        li 選擇一堆壓克力板，並把最上面的一片拿掉。
+        li 選擇一堆 $2x$ 片 ($x$ 為正整數) 的壓克力板，將它整堆拿掉，並另外補上 $k$ 堆每堆 $x$ 片的壓克力板。
+
+      br
+      br
+      最後無法移動的人就輸了。如果 Kevin 先動，且雙方使用最佳策略，那麼最後誰會獲勝？
+
+      | ($1 \leq N \leq 10^5, 1 \leq k \leq 10^9, 1 \leq a_i \leq 10^9$)
+
+  +slide(data-markdown=true)
+    ul
+      li.fragment 每堆壓克力是獨立的
+      li.fragment SG Value !
+      li.fragment 那麼單獨一堆壓克力的 SG Value 是多少呢？
+      li.fragment 只有至多 $2$ 種操作 => SG Value $\leq 2$
+      li.fragment 直接用定義算
+
+  +slide(data-markdown=true)
+    | $$
+    | SG(x) =  
+    | \begin{cases}
+    | \mathrm{mex}\\\{SG(x-1)\\\} &, x \bmod 2 = 1 \\\\
+    | \mathrm{mex}\\\{SG(x-1), SG(x/2) \cdot (k \bmod 2)\\\} &, x \bmod 2 = 0 \textrm{ and } x > 0 \\\\
+    | 0 &, x = 0
+    | \end{cases} $$
+
+    h2.fragment 找規律!
+    ul.fragment
+      li $k$ 偶數
+      li $k$ 奇數
+    br
+    br
+    h1.fragment <font color="yellow">^_^;;</font>
+
+  +slide(data-markdown=true)
+    +problem({name: '？克力蛋糕'})
+      桌上有一塊<font color="red">巧</font>克力蛋糕，被切成 $N \times M$ 的矩形，左下角為 $(1, 1)$，右上角為 $(N, M)$，而 $(1, 1)$ 的塊被偷換成<font color="green">壓</font>克力蛋糕。兩人輪流操作，每回合可以選一塊剩餘的蛋糕 $(i, j)$ ，並將他右上角 $(i' \geq i, j' \geq j)$ 的蛋糕都吃掉。<font color="green">壓</font>克力蛋糕難吃又傷牙齒，請問先手還是後手會被迫吞下它？
+
+  +slide(data-markdown=true)
+    h2 後手有可能會必勝嗎？ 
+    ul
+      li.fragment 假設可以好了XD
+      li.fragment 那麼先手選 $(N, M)$，後手必有一個 $(i, j)$ 位置可以應對
+      li.fragment 然後後手就贏了
+      li.fragment 欸... 你說後手贏了？ 那先手幹麻不一開始就下 $(i, j)$ 就好了？
+      li.fragment 反正 $(i, j)$ 的矩形會覆蓋到 $(N, M)$ 嘛
+      li.fragment 所以事實是：根本就是<font color="red">先手必勝</font>，後手必吃<font color="green">壓克力</font>
+      li.fragment 然後你就會吃一個大大的 <font color="lightblue"> Wrong Answer</font>
+      li.fragment 小心 $N = M = 1$
+
+  +slide(data-markdown=true)
+    +problem({name: '翻軟幣遊戲'})
+      <font color="red">錒安</font>最近吃飽沒事幹，跑去銀行把身上的 $10NM$ 元全換成十元硬幣，就為了回家跟<font color="green">鋇蒂</font>玩遊戲。
+      他把十元硬幣在桌上排成一個 $N \times M$ 的矩形，有些文字朝上，有些人頭朝上。
+      兩人輪流移動，每次需要做的事有：
+      br
+      br
+      ul
+        li 任選一個**文字朝上**的硬幣 $(i, j)$，$1 \leq i \leq N, 1 \leq j \leq M$。
+        li 任選一個座標 $(i', j')$ 使得 $0 \leq i' < i, 0 \leq j' < j$。
+        li 把 $(i, j), (i, j'), (i', j), (i', j')$ 四個位置的硬幣都翻面。(如果座標數值有 $0$ ，代表該個硬幣不存在，跳過它。)      
+      br
+      br
+      <font color="red">錒安</font>先動，不能動的人就輸了。獲勝的人可以拿走所有的硬幣，因此他們兩人都會使用最佳策略，不會故意放水。給定初始盤面，你能預測誰會把錢帶走嗎？
+      | ($1 \leq N, M \leq 50$)
+
+  +slide(data-markdown=true)
+    ul
+      li.fragment 文字朝上為 $1$ ，人頭朝上為 $0$
+      li.fragment 這遊戲會在有限步內結束！
+      li.fragment 每個位置都是獨立的！
+      li.fragment ... Why?
+
+  +slide(data-markdown=true)
+    h3 這遊戲會在有限步內結束！
+    p 把整個盤面表示成二進位數
+    | $$f(S) = \sum a_{i, j} 2^{i \cdot M + j}$$
+    ul
+      li.fragment 每次操作 $(i, j)$ 從 1 變 0
+      li.fragment 剩下三個怎麼變，貢獻都贏不過 $(i, j)$ 
+      li.fragment $f(S)$ 必減小！每次至少減少 1
+      li.fragment $f(S) = 0$ 時遊戲結束
+
+  +slide(data-markdown=true)
+    h3 每個位置都是獨立的！
+    ul
+      li.fragment 這就比較沒道理了
+      li.fragment 先把遊戲規則改一下...
+      li.fragment $(i, j)$ 數值 $-1$ ，另外三格數值 $+1$
+      li.fragment 遊戲一樣會結束
+      li.fragment 這下每格很明顯獨立了吧！
+
+  +slide(data-markdown=true)
+    h3 但這規則與原本的遊戲等價嗎？
+    ul
+      li.fragment 新規則下，一格數字 $\pm 2$ ，不影響 SG Value
+      li.fragment 使用數學歸納法
+      li.fragment 假設二進位數值比 $S$ 小的盤面，新舊規則 SG Value 都相同
+      li.fragment 對於每個 $S$ 用新規則走到的盤面，把所有 $2$ 換成 $0$，不影響 SG Value
+      li.fragment 而且會一一對應到一個舊規則走到的盤面
+      li.fragment 所以新舊規則走得到的盤面的 SG Value 集合相同
+      li.fragment 盤面 $S$ ，新舊規則 SG Value 相同
+    h3.fragment 所以確實可以視為獨立！
+
+  +slide(data-markdown=true)
+    h3 接下來呢？
+    ul
+      li.fragment 考慮全部只有 $(i, j)$ 是 $1$ 的盤面
+      li.fragment 枚舉所有操作，使用 SG Theorem 算出到達盤面的 SG Value
+      li.fragment 利用 $\mathrm{mex}$ 的定義直接計算 $(i, j)$ 盤面的 SG Value
+      li.fragment 再用這些只有一個 $1$ 的盤面，組成原始盤面
+      li.fragment $O(N^2 M^2)$
+
+  +slide(data-markdown=true)
+    h2 還想更快嗎？
+    h1.fragment Nim Product
+
+  +slide(data-markdown=true)
+    img(width="60%", src="img/nimprod.png")
+
+  +slide(data-markdown=true)
+    h3 性質
+    ul
+      li.fragment $a \otimes (b \oplus c) = (a \otimes b) \oplus (a \otimes c) $
+      li.fragment 相異費馬冪次 ($X = 2^{2^k}$) 相乘，等於正常整數相乘
+      li.fragment 費馬冪次 $X \otimes X = \frac{3}{2}X$ 
+    

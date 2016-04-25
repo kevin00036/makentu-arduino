@@ -1,0 +1,106 @@
+include mixin
+
+section
+  +slide(data-markdown=true)
+    h1 Sprague-Grundy Theorem
+
+  +slide(data-markdown=true)
+    ul
+      li.fragment Nim 其實是很多團<font color="green">廢</font>遊戲組合起來
+      li.fragment 每次只能挑一團動一步
+      li.fragment <font color="green">廢</font>遊戲組合起來就這麼難，那麼萬一是一般遊戲呢？
+      li.fragment 安啦！
+    br
+    br
+    h2.fragment <font color="red">S</font>prague-<font color="blue">G</font>rundy Theorem !
+    h2.fragment <font color="red">死</font>布拉格-<font color="blue">個</font>浪底 定理！
+    
+  +slide(data-markdown=true)
+    p 對於任意的遊戲盤面，可以定義類似 Nim 一樣的特徵值:
+    h2.fragment <font color="red">S</font><font color="blue">G</font> Value (<font color="red">死</font><font color="blue">個</font>數值)
+
+  +slide(data-markdown=true)
+    +theorem({name: 'SG Value'}).
+      對於一個遊戲盤面 $S$ ，定義其 <font color="red">S</font><font color="blue">G</font> Value 為其可以走到的狀態的 <font color="red">S</font><font color="blue">G</font> Value 中，**最小沒出現的**非負整數。
+
+      $$ SG(S) = \mathrm{mex}\\\{SG(x) : x \in F(S)\\\}$$
+      $$ \mathrm{mex}(S) = \min\\\{i : i \in \mathbb{N} \backslash S\\\} $$
+
+    p.fragment 例如: $\mathrm{mex}(\\\{0, 1, 2, 4, 6\\\}) = 3$
+    h3.fragment 有沒有跟 Nim 很像？
+
+  +slide(data-markdown=true)
+    p <font color="red">S</font><font color="blue">G</font> Value 可以視為 $x(S)$ 值的強化版：
+    +theorem({name: ''}).
+      盤面 $S$ 為先手必勝，若且唯若 $SG(S) \neq 0$。
+    ul
+      li.fragment 從定義就看得出來
+      li.fragment $SG = 0$ 走不到 $SG = 0$
+      li.fragment $SG \neq 0$ 走得到至少一個 $SG = 0$
+
+  +slide(data-markdown=true)
+    p 不過 <font color="red">S</font><font color="blue">G</font> Value 厲害的其實是...
+    h2.fragment 他可以像 Nim 特徵值一樣隨便 XOR !!
+
+  +slide(data-markdown=true)
+    +theorem({name: 'Game Sum'}).
+      假設 $S_1, S_2$ 是兩個獨立的遊戲，他們的**和** $S_1 + S_2$ 代表將兩個遊戲擺在一起形成的新遊戲。每次操作只能從 $S_1, S_2$ 挑一邊動一步。也就是說，
+      $$ F(S_1 + S_2) = \{x + S_2 : x \in F(S_1)\} \cup \{S_1 + y : y \in F(S_2)\} $$
+
+    .fragment
+      +theorem({name: 'Game Sum'}).
+        對於任意的遊戲 $S_1, S_2$，他們的和的 SG Value 為
+        $$ SG(S_1 + S_2) = SG(S_1) \oplus SG(S_2) $$
+
+  +slide(data-markdown=true)
+    ul
+      li 但其實也沒那麼顯然
+      li.fragment 畢竟他跟 NIM 還是有點不一樣
+      li.fragment NIM 無法走到 Value 更大的狀態
+      li.fragment 一般遊戲有可能！
+
+  +slide(data-markdown=true)
+    h3 要證明 $SG(S_1 + S_2) = SG(S_1) \oplus SG(S_2)$，只需要證兩件事
+    ul
+      li.fragment $S_1 + S_2$ 無法走到 $SG = SG(S_1) \oplus SG(S_2)$ 的狀態。
+      li.fragment 對於任何 $0 \leq x \leq SG(S_1) \oplus SG(S_2)$，$S_1 + S_2$ 可以走到至少一個 $SG = x$ 的狀態。
+
+  +slide(data-markdown=true)
+    ul
+      li 因為 $S_1 + S_2$ 盤面也會在有限步內結束，因此新的 Game Graph 也可以表示成 DAG。
+      li 而新 Game Graph 的結束狀態，代表已無步可動，也就是 $S_1, S_2$ 都已處於結束狀態，其 SG Value 為 $0 \oplus 0 = 0$。
+      li 因此我們可以依照拓樸順序來使用數學歸納法，假設所有 $S_1 + S_2$ 可以走到的狀態，都已符合 SG Theorem。 
+
+  +slide(data-markdown=true)
+    h3 $S_1 + S_2$ 無法走到 $SG = SG(S_1) \oplus SG(S_2)$ 的狀態。
+    ul
+      li.fragment 恰好挑一邊動一步
+      li.fragment 該邊的 SG Value 必改變
+      li.fragment 新狀態兩邊 XOR 起來，必不等於原狀態兩邊 XOR 起來
+      li.fragment 根據數歸假設，新狀態 SG Value 等於兩邊 SG Value XOR 起來
+      li.fragment 新 SG Value $\neq SG(S_1) \oplus SG(S_2)$
+
+  +slide(data-markdown=true)
+    h3 對於任何 $0 \leq x \leq SG(S_1) \oplus SG(S_2)$，$S_1 + S_2$ 可以走到至少一個 $SG = x$ 的狀態。
+    ul
+      li 動 $S_1$ 的話，可以走到 $0 \sim SG(S_1)-1$ 的狀態。
+      li 動 $S_2$ 的話，可以走到 $0 \sim SG(S_2)-1$ 的狀態。
+      li 我們希望動完之後，兩邊 XOR 起來恰是 $X$。
+      li 也就是說，要證底下這件事情：
+    +theorem({name: ''}).
+      設 $a, b \geq 0$, 對於所有 $0 \leq x < a \oplus b$，或者存在 $0 \leq a' < a$ 使得 $a' \oplus b = x$，或者存在 $0 \leq b' < b$ 使得 $a \oplus b' = x$。
+
+  +slide(data-markdown=true)
+    ul
+      li 假設 $x$ 與 $a \oplus b$ 從左邊數來第一次相異是在第 $k$ 個 Bit
+      li.fragment $x < a \oplus b$，因此 $x$ 的第 $k$ Bit 為 $0$ ，$a \oplus b$ 的第 $k$ Bit 為 $1$
+      li.fragment $a, b$ 中恰好一數第 $k$ Bit 為 $1$，假設是 $a$
+      li.fragment 所以 $b$ 的第 $k$ Bit 為 $0$
+      li.fragment 取 $a' = x \oplus b$
+      li.fragment $a'$ 的第 $k$ Bit 為 $0$ ，更左邊的 Bit 都跟 $a$ 相同
+      li.fragment $a' < a$ !
+
+  +slide(data-markdown=true)
+    h2 終於證完了！
+    h3 那麼來看些題目吧
+

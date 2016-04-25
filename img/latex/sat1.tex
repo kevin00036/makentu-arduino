@@ -1,0 +1,18 @@
+\documentclass[tikz, border=5pt, convert={outext=.svg, density=500x500}]{standalone}
+\begin{document}
+\input{global.tex}
+  \begin{tikzpicture}[x=0.8cm,y=-0.8cm]
+    \foreach \x/\y/\lab/\tx in {
+      0/0/1/$x_1$,
+      1.5/0/2/$\lnot x_1$,
+      0/2/3/$x_2$,
+      1.5/2/4/$\lnot x_2$%
+    } {
+      \node[vertex, inner sep=0pt, minimum size=0.7cm] (\lab) at (\x, \y) {\tx};
+    }
+    \begin{scope}[every edge/.append style={pos=.5}]
+      \draw[draw,thick,-latex, bend left] (2) edge (3);
+      \draw[draw,thick,-latex, bend left] (4) edge (1);
+    \end{scope}
+  \end{tikzpicture}
+\end{document}

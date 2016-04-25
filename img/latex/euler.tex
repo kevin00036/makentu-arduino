@@ -1,0 +1,11 @@
+\documentclass[tikz, border=5pt, convert={outext=.svg, density=500x500}]{standalone}
+\begin{document}
+\input{global.tex}
+  \begin{tikzpicture}[x=0.8cm,y=-0.8cm]
+    \foreach \x in {1,2,3,4} {
+      \foreach \y in {1,2,3,4} {
+        \draw (\x, \y) circle (0.707);
+      }
+    }
+  \end{tikzpicture}
+\end{document}
