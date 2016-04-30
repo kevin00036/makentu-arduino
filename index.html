@@ -22,7 +22,51 @@ document.getElementsByTagName( 'head' )[0].appendChild( link );
   \newcommand{\argmax}{\operatorname{arg\,max}}
   \newcommand{\cons}[1]{\left[ \: #1 \: \right]}
   \newcommand{\str}[1]{\texttt{"#1"}}
-\)<section><h1>好號熊</h1><p><div class="small">Created by STEP5</div></p></section><section><!DOCTYPE html><section data-markdown><script type="text/template"><h1>簡介</h1><h2>簡介</h2><ul><li>好號壹</li><li>好號貳</li></ul><h2>arduino 硬字自動板</h2><h2>arduino 軟字自動板</h2></script></section><!DOCTYPE html><section data-markdown><script type="text/template"><h1>123</h1></script></section></section><!DOCTYPE html><section data-markdown><script type="text/template"><h1>Q & A</h1></script></section></div></div><script src="js/jquery.js"></script><script src="reveal/lib/js/head.min.js"></script><script src="reveal/js/reveal.js"></script><script src="js/sketch.min.js"></script><script>// Full list of configuration options available at:
+\)<section><h1>Arduino</h1><p><div class="small">MakeNTU</div></p></section><section><!DOCTYPE html><section data-markdown><script type="text/template"><h1>Arduino Uno</h1><img src="img/Arduino.jpg" height="400"></script></section><!DOCTYPE html><section data-markdown><script type="text/template"><h2>Arduino Uno</h2><ul><li class="fragment">ATmega328P Microcontroller</li><li class="fragment">CPU: 16 <font color="red">M</font>Hz</li><li class="fragment">SRAM: 2 <font color="red">K</font>B</li><li class="fragment">Program Memory: 32 <font color="red">K</font>B</li></ul><h1 class="fragment">慘!</h1></script></section><!DOCTYPE html><section data-markdown><script type="text/template"><h2>So Why Arduino?</h2><ul><li class="fragment">有時候其實不需那麼強的計算力!</li><li class="fragment">低成本</li><li class="fragment">體積小</li><li class="fragment">Real-time control</li></ul></script></section></section><section><!DOCTYPE html><section data-markdown><script type="text/template"><h1>Arduino I/O ports</h1></script></section><!DOCTYPE html><section data-markdown><script type="text/template"><ul><li>Digital I/O : x14 (PWM x6)</li><li>Analog Input : 6</li><li>Operating Voltage : <font color="red">5V</font></li><li>I/O pin max current  : <font color="red">20mA</font></li></ul></script></section><!DOCTYPE html><section data-markdown><script type="text/template"><img src="img/pinout.png"></script></section><!DOCTYPE html><section data-markdown><script type="text/template"><h1>[全慘號]</h1></script></section></section><section><!DOCTYPE html><section data-markdown><script type="text/template"><h1>Software</h1></script></section><!DOCTYPE html><section data-markdown><script type="text/template"><p> <ul><li>基本上就是 C / C++</li><li>單線程 (Single-threaded)</li></ul></p></script></section><!DOCTYPE html><section data-markdown><script type="text/template"><h3><a href="https://www.arduino.cc/en/Main/Software">Arduino IDE (點我下載!)</a></h3><img src="img/ide.png"></script></section><!DOCTYPE html><section data-markdown><script type="text/template"><h2>C / C++</h2><pre><code>int main()
+{
+  cout << "Hello World!" << endl;
+}
+</code></pre></script></section><!DOCTYPE html><section data-markdown><script type="text/template"><h2>Arduino</h2><pre><code>void setup()
+{
+  // XDD
+}
+void loop()
+{
+  // XDD
+}</code></pre><p class="fragment">setup() => loop() => loop() => loop() => ...</p></script></section><!DOCTYPE html><section data-markdown><script type="text/template"><h2>Digital I/O</h2><pre><code>pinMode(1, OUTPUT); // 設定 Pin 1 為 Input 模式
+pinMode(2, INPUT); // 設定 Pin 2 為 Input 模式
+ 
+digitalWrite(1, HIGH); // 把 Pin 1 設成高電位
+digitalWrite(1, LOW); // 把 Pin 1 設成低電位
+ 
+digitalRead(2); // 讀取 Pin 2 的電位值：會回傳 HIGH 或 LOW</code></pre></script></section><!DOCTYPE html><section data-markdown><script type="text/template"><h2>睡覺</h2><pre><code>delay(200); // 暫停 200 毫秒</code></pre></script></section><!DOCTYPE html><section data-markdown><script type="text/template"><h2>取得時間</h2><pre><code>millis(); // 取得開機到現在的毫秒數
+micros(); // 取得開機到現在的微秒數</code></pre></script></section><!DOCTYPE html><section data-markdown><script type="text/template"><h2>資料型態</h2><p>Arduino 上的資料型態的大小與一般 C/C++ 有些差別</p><p><ul><li>int : 16 bits (-32768 ~ 32767)</li><li>long : 32 bits (-2147483648 ~ 2147483647)</li><li>float : 32 bits (大約 16 位有效數字)</li></ul></p><h2 class="fragment"><font color="lightgreen">注意溢位！</font></h2><h3 class="fragment">這裡很容易整個慘掉</h3><p class="fragment">(尤其是時間，請用 long 變數接，不要用 int )</p></script></section><!DOCTYPE html><section data-markdown><script type="text/template"><h2>Serial port</h2><ul><li class="fragment">Arduino 跟電腦溝通的介面 (透過 USB)</li><li class="fragment">可以拿來印 Debug 訊息</li><li class="fragment">115200 bit/s</li></ul></script></section><!DOCTYPE html><section data-markdown><script type="text/template"><h2>Serial port</h2><pre><code>void setup()
+{
+  Serial.begin(115200);
+}
+ 
+void loop()
+{
+  Serial.print("MS: "); // 印字串
+  Serial.print(1234); // 印數字
+  Serial.println(1234); // 有 +ln 有換行
+}</code></pre></script></section><!DOCTYPE html><section data-markdown><script type="text/template"><h2>Example : LED 閃爍器</h2><pre><code>bool light;  
+ 
+void setup()
+{
+  pinMode(13, OUTPUT); // 13 pin 可以順便操控板子上的綠色 LED 燈
+  light = false;
+}
+ 
+void loop()
+{
+  if(light) 
+    digitalWrite(13, HIGH);
+  else
+    digitalWrite(13, LOW);
+  light = !light;
+  delay(500);
+}</code></pre></script></section><!DOCTYPE html><section data-markdown><script type="text/template"><h2>好用的官方 Document</h2><p><ul><li><a href="https://www.arduino.cc/en/Tutorial/BuiltInExamples">Tutorial</a></li><li><a href="https://www.arduino.cc/en/Reference/HomePage">Reference</a></li></ul></p><h3 class="fragment">沒事多查 Document ，有益身心健康</h3></script></section></section><section><!DOCTYPE html><section data-markdown><script type="text/template"><h1>Project</h1><h2 class="fragment">聲控垃圾車</h2><h3 class="fragment">聲(鈉)控(制)的<font color="blue">垃圾</font>車 </h3></script></section><!DOCTYPE html><section data-markdown><script type="text/template"><h2>目標</h2><p>利用聲鈉偵測障礙物，控制垃圾車不要撞牆!</p></script></section><!DOCTYPE html><section data-markdown><script type="text/template"><h2>垃圾車 </h2><img src="img/car.jpg" height="300"><ul><li class="fragment">NT$ 40</li><li class="fragment">裡面有附組裝說明書</li><li class="fragment">只能開/停</li><li class="fragment">不能轉彎、倒退</li></ul><h1 class="fragment">慘!</h1></script></section><!DOCTYPE html><section data-markdown><script type="text/template"><h2>馬達</h2><img src="img/motor.jpg" height="300"><ul><li class="fragment">NT$ <b><font color="red">3</font></b></li><li class="fragment">DC $\pm 3$V</li><li class="fragment">逆向電壓->反著轉</li><li class="fragment">電流 : 0.3 ~ 1A</li></ul><h3 class="fragment">小心焊接!</h3></script></section><!DOCTYPE html><section data-markdown><script type="text/template"><h2>聲鈉</h2><ul><li class="fragment">請參照昨天 @LeoMao 大大的<a href="http://leomao.gitlab.io/workshop-slides/#/9/3">講義</a></li><li class="fragment">RPi 寫得出來，Arduino 沒道理不行xd</li><li class="fragment">usleep()</li><li class="fragment">pulseIn()</li></ul></script></section><!DOCTYPE html><section data-markdown><script type="text/template"><h2>請務必認明好字聲鈉!!</h2><img src="img/total.png" height="250"><p>左 : <font color="green">聲鈉</font></p><p>右 : 長得很像<font color="green">聲鈉</font>的<font color="red">餅乾</font></p></script></section><!DOCTYPE html><section data-markdown><script type="text/template"><h2>蜂鳴器</h2><img src="img/fm.jpg" height="300"><p><ul><li class="fragment">通 3~5V 直流電，會發出聲音</li><li class="fragment">有分正負極</li><li class="fragment">快撞到牆時發出警報聲響</li></ul></p><h2 class="fragment">最吵的那種!!</h2></script></section><!DOCTYPE html><section data-markdown><script type="text/template"><h2>電晶體</h2><ul><li class="fragment">馬達電流: 0.3A ~ 1A</li><li class="fragment">Arduino 輸出電流: <20mA</li><li class="fragment">:(</li></ul></script></section><!DOCTYPE html><section data-markdown><script type="text/template"><h2>電晶體</h2><img src="img/bjt.jpg" height="200"><ul><li class="fragment">MJE3055T (NPN BJT)</li><li class="fragment">B : 接 Arduino 輸出</li><li class="fragment">C : 馬達正極</li><li class="fragment">E : 馬達負極、接地</li></ul><h3 class="fragment">慘點 : 會吃掉 0.7V 電壓</h3><h3 class="fragment">反轉!?</h3></script></section><!DOCTYPE html><section data-markdown><script type="text/template"><h2>其他電子元件</h2><h3 class="fragment">電電實驗室 :)</h3><ul><li class="fragment">電阻、電容、電晶體、導線、...</li><li class="fragment"><font color="red">慘</font>阻、<font color="red">慘</font>容、電<font color="red">慘</font>體、<font color="red">慘</font>線、...</li><li class="fragment">零件用完要歸位</li></ul></script></section><!DOCTYPE html><section data-markdown><script type="text/template"><img src="img/comp.jpg" height="500"></script></section></section><section><!DOCTYPE html><section data-markdown><script type="text/template"><h1>Hints</h1></script></section><!DOCTYPE html><section data-markdown><script type="text/template"><h2>電池</h2><ul><li>9V 長方形電池：供 Arduino 電源</li><li>正極接 Vin ，負極接 GND</li><li>1.5V x2 (或 x3) 乾電池：供馬達電源</li><li>動力不足的話，可以考慮增加至 3 顆電池</li><li>馬達轉動時，大電流會將電池電壓拉低至 1~2V</li></ul></script></section><!DOCTYPE html><section data-markdown><script type="text/template"><h2>電壓/電流</h2><ul><li>Arduino Pin 輸出高電位 : 5V</li><li>Arduino Pin 最大電流 : 20mA</li><li>請善用電電實驗室的儀器們</li><li class="fragment">注意不要燒壞板子!</li><li class="fragment">(燒壞了就變<b>高級餅乾</b>)</li></ul></script></section><!DOCTYPE html><section data-markdown><script type="text/template"><h2>「硬體跟軟體整合在一起，軟體通常都不是問題」</h2></script></section></section><section><!DOCTYPE html><section data-markdown><script type="text/template"><h1>Thank you</h1><h3>大家加油XD</h3></script></section></section></div></div><script src="js/jquery.js"></script><script src="reveal/lib/js/head.min.js"></script><script src="reveal/js/reveal.js"></script><script src="js/sketch.min.js"></script><script>// Full list of configuration options available at:
 // https://github.com/hakimel/reveal.js#configuration
 Reveal.initialize({
   controls: true,

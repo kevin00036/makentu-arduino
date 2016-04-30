@@ -2,14 +2,294 @@ include mixin
 
 section
   +slide(data-markdown=true)
-    h1 簡介
-    h2 簡介
-    ul
-      li 好號壹
-      li 好號貳
-
-    h2 arduino 硬字自動板
-    h2 arduino 軟字自動板
+    h1 Arduino Uno
+    img(src="img/Arduino.jpg",height=400)
 
   +slide(data-markdown=true)
-    h1 123
+    h2 Arduino Uno
+    ul
+      li.fragment ATmega328P Microcontroller
+      li.fragment CPU: 16 <font color="red">M</font>Hz
+      li.fragment SRAM: 2 <font color="red">K</font>B
+      li.fragment Program Memory: 32 <font color="red">K</font>B
+
+    h1.fragment 慘!
+
+  +slide(data-markdown=true)
+    h2 So Why Arduino?
+    ul
+      li.fragment 有時候其實不需那麼強的計算力!
+      li.fragment 低成本
+      li.fragment 體積小
+      li.fragment Real-time control
+    
+section
+  +slide(data-markdown=true)
+    h1 Arduino I/O ports
+
+  +slide(data-markdown=true)
+    ul
+      li Digital I/O : x14 (PWM x6)
+      li Analog Input : 6
+      li Operating Voltage : <font color="red">5V</font>
+      li I/O pin max current  : <font color="red">20mA</font>
+
+  +slide(data-markdown=true)
+    img(src="img/pinout.png")
+
+  +slide(data-markdown=true)
+    h1 [全慘號]
+
+section
+  +slide(data-markdown=true)
+    h1 Software
+
+  +slide(data-markdown=true)
+    p 
+      ul
+        li 基本上就是 C / C++
+        li 單線程 (Single-threaded)
+
+  +slide(data-markdown=true)
+    h3
+      a(href="https://www.arduino.cc/en/Main/Software") Arduino IDE (點我下載!)
+
+    img(src="img/ide.png")
+      
+  +slide(data-markdown=true)
+    h2 C / C++
+    pre
+      code.
+        int main()
+        {
+          cout << "Hello World!" << endl;
+        }
+    
+  +slide(data-markdown=true)
+    h2 Arduino
+    pre
+      code
+        | void setup()
+        | {
+        |   // XDD
+        | }
+        | void loop()
+        | {
+        |   // XDD
+        | }
+
+    p.fragment setup() => loop() => loop() => loop() => ...
+
+  +slide(data-markdown=true)
+    h2 Digital I/O
+    pre
+      code
+        | pinMode(1, OUTPUT); // 設定 Pin 1 為 Input 模式
+        | pinMode(2, INPUT); // 設定 Pin 2 為 Input 模式
+        | 
+        | digitalWrite(1, HIGH); // 把 Pin 1 設成高電位
+        | digitalWrite(1, LOW); // 把 Pin 1 設成低電位
+        | 
+        | digitalRead(2); // 讀取 Pin 2 的電位值：會回傳 HIGH 或 LOW
+
+  +slide(data-markdown=true)
+    h2 睡覺
+    pre
+      code
+        | delay(200); // 暫停 200 毫秒
+
+  +slide(data-markdown=true)
+    h2 取得時間
+    pre
+      code
+        | millis(); // 取得開機到現在的毫秒數
+        | micros(); // 取得開機到現在的微秒數
+
+  +slide(data-markdown=true)
+    h2 資料型態
+    p Arduino 上的資料型態的大小與一般 C/C++ 有些差別
+    p
+      ul
+        li int : 16 bits (-32768 ~ 32767)
+        li long : 32 bits (-2147483648 ~ 2147483647)
+        li float : 32 bits (大約 16 位有效數字)
+
+    h2.fragment <font color="lightgreen">注意溢位！</font>
+    h3.fragment 這裡很容易整個慘掉
+    p.fragment (尤其是時間，請用 long 變數接，不要用 int )
+
+  +slide(data-markdown=true)
+    h2 Serial port
+    ul
+      li.fragment Arduino 跟電腦溝通的介面 (透過 USB)
+      li.fragment 可以拿來印 Debug 訊息
+      li.fragment 115200 bit/s
+
+  +slide(data-markdown=true)
+    h2 Serial port
+    pre
+      code
+        | void setup()
+        | {
+        |   Serial.begin(115200);
+        | }
+        |  
+        | void loop()
+        | {
+        |   Serial.print("MS: "); // 印字串
+        |   Serial.print(1234); // 印數字
+        |   Serial.println(1234); // 有 +ln 有換行
+        | }
+
+  +slide(data-markdown=true)
+    h2 Example : LED 閃爍器
+    pre
+      code
+        | bool light;  
+        | 
+        | void setup()
+        | {
+        |   pinMode(13, OUTPUT); // 13 pin 可以順便操控板子上的綠色 LED 燈
+        |   light = false;
+        | }
+        | 
+        | void loop()
+        | {
+        |   if(light) 
+        |     digitalWrite(13, HIGH);
+        |   else
+        |     digitalWrite(13, LOW);
+        |   light = !light;
+        |   delay(500);
+        | }
+
+  +slide(data-markdown=true)
+    h2 好用的官方 Document
+    p
+      ul
+        li
+          a(href="https://www.arduino.cc/en/Tutorial/BuiltInExamples") Tutorial
+        li
+          a(href="https://www.arduino.cc/en/Reference/HomePage") Reference
+
+    h3.fragment 沒事多查 Document ，有益身心健康
+
+
+section
+  +slide(data-markdown=true)
+    h1 Project
+    h2.fragment 聲控垃圾車
+    h3.fragment 聲(鈉)控(制)的<font color="blue">垃圾</font>車 
+
+  +slide(data-markdown=true)
+    h2 目標
+    p 利用聲鈉偵測障礙物，控制垃圾車不要撞牆!
+
+  +slide(data-markdown=true)
+    h2 垃圾車 
+    img(src="img/car.jpg",height=300)
+    ul
+      li.fragment NT$ 40
+      li.fragment 裡面有附組裝說明書
+      li.fragment 只能開/停
+      li.fragment 不能轉彎、倒退
+    h1.fragment 慘!
+
+  +slide(data-markdown=true)
+    h2 馬達
+    img(src="img/motor.jpg",height=300)
+    ul
+      li.fragment NT$ <b><font color="red">3</font></b>
+      li.fragment DC $\pm 3$V
+      li.fragment 逆向電壓->反著轉
+      li.fragment 電流 : 0.3 ~ 1A
+
+    h3.fragment 小心焊接!
+
+  +slide(data-markdown=true)
+    h2 聲鈉
+    ul
+      li.fragment 請參照昨天 @LeoMao 大大的
+        a(href="http://leomao.gitlab.io/workshop-slides/#/9/3") 講義
+      li.fragment RPi 寫得出來，Arduino 沒道理不行xd
+      li.fragment usleep()
+      li.fragment pulseIn()
+
+  +slide(data-markdown=true)
+    h2 請務必認明好字聲鈉!!
+    img(src="img/total.png",height=250)
+    p 左 : <font color="green">聲鈉</font>
+    p 右 : 長得很像<font color="green">聲鈉</font>的<font color="red">餅乾</font>
+
+  +slide(data-markdown=true)
+    h2 蜂鳴器
+    img(src="img/fm.jpg",height=300)
+    p
+      ul
+        li.fragment 通 3~5V 直流電，會發出聲音
+        li.fragment 有分正負極
+        li.fragment 快撞到牆時發出警報聲響
+
+    h2.fragment 最吵的那種!!
+
+  +slide(data-markdown=true)
+    h2 電晶體
+    ul
+      li.fragment 馬達電流: 0.3A ~ 1A
+      li.fragment Arduino 輸出電流: <20mA
+      li.fragment :(
+
+  +slide(data-markdown=true)
+    h2 電晶體
+    img(src="img/bjt.jpg",height=200)
+    ul
+      li.fragment MJE3055T (NPN BJT)
+      li.fragment B : 接 Arduino 輸出
+      li.fragment C : 馬達正極
+      li.fragment E : 馬達負極、接地
+
+    h3.fragment 慘點 : 會吃掉 0.7V 電壓
+    h3.fragment 反轉!?
+
+
+  +slide(data-markdown=true)
+    h2 其他電子元件
+
+    h3.fragment 電電實驗室 :)
+    ul
+      li.fragment 電阻、電容、電晶體、導線、...
+      li.fragment <font color="red">慘</font>阻、<font color="red">慘</font>容、電<font color="red">慘</font>體、<font color="red">慘</font>線、...
+      li.fragment 零件用完要歸位
+
+  +slide(data-markdown=true)
+    img(src="img/comp.jpg",height=500)
+
+section
+  +slide(data-markdown=true)
+    h1 Hints
+
+  +slide(data-markdown=true)
+    h2 電池
+    ul
+      li 9V 長方形電池：供 Arduino 電源
+      li 正極接 Vin ，負極接 GND
+      li 1.5V x2 (或 x3) 乾電池：供馬達電源
+      li 動力不足的話，可以考慮增加至 3 顆電池
+      li 馬達轉動時，大電流會將電池電壓拉低至 1~2V
+
+  +slide(data-markdown=true)
+    h2 電壓/電流
+    ul
+      li Arduino Pin 輸出高電位 : 5V
+      li Arduino Pin 最大電流 : 20mA
+      li 請善用電電實驗室的儀器們
+      li.fragment 注意不要燒壞板子!
+      li.fragment (燒壞了就變<b>高級餅乾</b>)
+
+  +slide(data-markdown=true)
+    h2 「硬體跟軟體整合在一起，軟體通常都不是問題」
+
+section
+  +slide(data-markdown=true)
+    h1 Thank you
+    h3 大家加油XD
